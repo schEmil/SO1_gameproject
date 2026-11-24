@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bgf3ejkt22s7b"]
+
+[ext_resource type="Script" uid="uid://cduv0nsj02rgh" path="res://scripts/bow_charge_input.gd" id="1_nqgu8"]
+
+[node name="Node3D" type="Node3D" unique_id=994412881]
+
+[node name="bow" type="Node3D" parent="." unique_id=1661861416]
+
+[node name="bow_charge_input" type="Node" parent="bow" unique_id=1126908733]
+script = ExtResource("1_nqgu8")
