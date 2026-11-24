@@ -1,4 +1,5 @@
 extends Node
+class_name BowChargeInput
 
 @export var charge_input_action : String = "charge1"
 
@@ -41,6 +42,6 @@ func start_charge():
 func stop_charge():
 	stopped_charging.emit(cur_charge)
 	print("charge_stop: "+str(cur_charge))
-	cur_charge = charge_min
+	#cur_charge = charge_min
 	
 	pass
