@@ -70,6 +70,15 @@ _data = {
 &"moving_wall": SubResource("Animation_owwxs")
 }
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5kb7d"]
+albedo_color = Color(0, 0, 0.6117647, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7sxug"]
+albedo_color = Color(0.9254902, 0.9411765, 0.34509805, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_40f74"]
+albedo_color = Color(1, 0, 0.14901961, 1)
+
 [node name="Node3D" type="Node3D" unique_id=994412881]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=993171912]
@@ -148,7 +157,7 @@ script = ExtResource("5_ec6ii")
 transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0.2, 1)
 script = ExtResource("6_ec6ii")
 tags = Array[StringName]([&"bow"])
-guide_lerp_speed = 12.0
+guide_lerp_speed = 9.0
 metadata/_custom_type_script = "uid://b5n8m5utecfk5"
 
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=474263553]
@@ -179,6 +188,37 @@ size = Vector3(5, 5, 1)
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Node3D" unique_id=636908743]
 libraries/ = SubResource("AnimationLibrary_5kb7d")
 autoplay = &"moving_wall"
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=1278821053]
+transform = Transform3D(1, 0, 0, 0, 0.25881907, -0.9659258, 0, 0.9659258, 0.25881907, 0, 0, -13)
+use_collision = true
+radius = 1.0
+height = 0.3
+sides = 16
+
+[node name="CSGCylinder3D2" type="CSGCylinder3D" parent="CSGCylinder3D" unique_id=221938441]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.036899712, 0)
+use_collision = true
+radius = 0.7
+height = 0.3
+sides = 16
+material = SubResource("StandardMaterial3D_5kb7d")
+
+[node name="CSGCylinder3D4" type="CSGCylinder3D" parent="CSGCylinder3D" unique_id=1624005792]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.060124762, -9.313226e-10)
+use_collision = true
+radius = 0.35
+height = 0.3
+sides = 16
+material = SubResource("StandardMaterial3D_7sxug")
+
+[node name="CSGCylinder3D3" type="CSGCylinder3D" parent="CSGCylinder3D" unique_id=441223576]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.08379269, -2.3841858e-07)
+use_collision = true
+radius = 0.12
+height = 0.3
+sides = 16
+material = SubResource("StandardMaterial3D_40f74")
 
 [connection signal="stopped_charging" from="bow/bow_charge_input" to="bow/arrow_spawner" method="spawn_arrow"]
 [connection signal="constant_bc_ratio" from="bow/bow_charge_input/updator" to="bow/bow_charge_input/Control/PanelContainer/MarginContainer/VBoxContainer/fill" method="set_ratio"]
