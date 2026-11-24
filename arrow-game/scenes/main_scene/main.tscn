@@ -5,6 +5,9 @@
 [ext_resource type="Script" uid="uid://f4ba3vm2uqwr" path="res://scenes/bow_scene/show_charge.gd" id="2_y24u2"]
 [ext_resource type="Script" uid="uid://ojfaqlxqcw7r" path="res://scenes/bow_scene/fill_updator.gd" id="3_ihqgu"]
 [ext_resource type="Script" uid="uid://cundib2wh0436" path="res://scenes/bow_scene/arrow_spawner.gd" id="5_ec6ii"]
+[ext_resource type="Script" uid="uid://b5n8m5utecfk5" path="res://scripts/cam_guide.gd" id="6_ec6ii"]
+[ext_resource type="Script" uid="uid://bvhi6qc0ledxl" path="res://scripts/guided_cam.gd" id="7_owwxs"]
+[ext_resource type="Script" uid="uid://55bgcgxbx5u5" path="res://scenes/main_scene/cam_bow_control.gd" id="8_5kb7d"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_y24u2"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -26,6 +29,47 @@ colors = PackedColorArray(0.37254903, 0.37254903, 0.73333335, 1, 0.9372549, 0.52
 gradient = SubResource("Gradient_y24u2")
 width = 512
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_w6r2s"]
+size = Vector3(5, 5, 1)
+
+[sub_resource type="Animation" id="Animation_ec6ii"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("wall:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(4, 1, -4)]
+}
+
+[sub_resource type="Animation" id="Animation_owwxs"]
+resource_name = "moving_wall"
+length = 8.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("wall:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 4, 8),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(4, 1, -4), Vector3(-7, 1, -4), Vector3(4, 1, -4)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_5kb7d"]
+_data = {
+&"RESET": SubResource("Animation_ec6ii"),
+&"moving_wall": SubResource("Animation_owwxs")
+}
+
 [node name="Node3D" type="Node3D" unique_id=994412881]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=993171912]
@@ -39,8 +83,6 @@ shadow_enabled = true
 
 [node name="bow_charge_input" type="Node" parent="bow" unique_id=1126908733]
 script = ExtResource("1_nqgu8")
-charge_speed_a_sec = 5.0
-charge_max = 10.0
 
 [node name="Control" type="Control" parent="bow/bow_charge_input" unique_id=723836650]
 layout_mode = 3
@@ -99,19 +141,44 @@ script = ExtResource("3_ihqgu")
 b_c_input = NodePath("..")
 
 [node name="arrow_spawner" type="Node3D" parent="bow" unique_id=645915849]
-transform = Transform3D(1, 0, 0, 0, 0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 0.17364821, 0.98480767, 0, -0.98480767, 0.17364821, 0, -0.40000007, 1.4000001)
 script = ExtResource("5_ec6ii")
 
-[node name="cam_pos" type="Node3D" parent="bow" unique_id=1120651500]
-transform = Transform3D(1, 0, 0, 0, 0.8660254, -0.5, 0, 0.5, 0.8660254, 0, 0, 3)
+[node name="cam_pos" type="Node3D" parent="bow" unique_id=1289690596]
+transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0.2, 1)
+script = ExtResource("6_ec6ii")
+tags = Array[StringName]([&"bow"])
+guide_lerp_speed = 12.0
+metadata/_custom_type_script = "uid://b5n8m5utecfk5"
 
 [node name="CSGBox3D" type="CSGBox3D" parent="." unique_id=474263553]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -7.5, -33.5)
 use_collision = true
 size = Vector3(50, 12, 80)
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=411058238]
-transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0, 3)
+[node name="Camera3D" type="Camera3D" parent="." unique_id=411058238 node_paths=PackedStringArray("cur_cam_guide")]
+transform = Transform3D(1, 0, 0, 0, 0.9659259, -0.25881907, 0, 0.25881907, 0.9659258, 0, 0.2, 1)
+script = ExtResource("7_owwxs")
+cur_cam_guide = NodePath("../bow/cam_pos")
+
+[node name="Node" type="Node" parent="Camera3D" unique_id=1880870808 node_paths=PackedStringArray("cam")]
+script = ExtResource("8_5kb7d")
+cam = NodePath("..")
+
+[node name="Node3D" type="Node3D" parent="." unique_id=163367730]
+
+[node name="wall" type="AnimatableBody3D" parent="Node3D" unique_id=854614842]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 1, -4)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Node3D/wall" unique_id=396840608]
+shape = SubResource("BoxShape3D_w6r2s")
+
+[node name="CSGBox3D" type="CSGBox3D" parent="Node3D/wall" unique_id=916863643]
+size = Vector3(5, 5, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Node3D" unique_id=636908743]
+libraries/ = SubResource("AnimationLibrary_5kb7d")
+autoplay = &"moving_wall"
 
 [connection signal="stopped_charging" from="bow/bow_charge_input" to="bow/arrow_spawner" method="spawn_arrow"]
 [connection signal="constant_bc_ratio" from="bow/bow_charge_input/updator" to="bow/bow_charge_input/Control/PanelContainer/MarginContainer/VBoxContainer/fill" method="set_ratio"]

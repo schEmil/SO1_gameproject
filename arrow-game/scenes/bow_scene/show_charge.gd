@@ -10,5 +10,5 @@ func set_ratio(val : float = 0.0):
 	
 	var pixel_pos : int = 0
 	pixel_pos = int(float(img_ramp.get_size().x)*ratio)-1
-	print(pixel_pos)
+	#print(pixel_pos)
 	color = img_ramp.get_pixel(pixel_pos,0)
