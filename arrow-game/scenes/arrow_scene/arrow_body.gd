@@ -9,6 +9,7 @@ class_name ArrowBody3D
 @export var gravity_affect : float = 0.0
 
 @export var active_flying : bool = true
+@export var arrow_length : float = 2.0
 
 signal hit_something(hit_thing : Node3D)
 
@@ -18,11 +19,17 @@ func _ready() -> void:
 
 func on_body_entered(body : Node3D):
 	active_flying = false
+	
+	set_deferred("process_mode",ProcessMode.PROCESS_MODE_DISABLED)
+	
 	reparent.call_deferred(body)
 	global_position -= velocity.normalized()*0.005
-	#set_deferred("process_mode",ProcessMode.PROCESS_MODE_DISABLED)
+	
 	hit_something.emit(body)
+	if body is Target:
+		body.hit_target(self)
 	BowGlobal.arrow_hit_something.emit(self,body)
+	print("arrow_enter")
 
 func _physics_process(delta: float) -> void:
 	if not active_flying:

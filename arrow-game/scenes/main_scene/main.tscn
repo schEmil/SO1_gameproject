@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://b5n8m5utecfk5" path="res://scripts/cam_guide.gd" id="6_ec6ii"]
 [ext_resource type="Script" uid="uid://bvhi6qc0ledxl" path="res://scripts/guided_cam.gd" id="7_owwxs"]
 [ext_resource type="Script" uid="uid://55bgcgxbx5u5" path="res://scenes/main_scene/cam_bow_control.gd" id="8_5kb7d"]
+[ext_resource type="PackedScene" uid="uid://bn2c0cyv1cn0o" path="res://scenes/target_scene/target.tscn" id="9_7sxug"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_y24u2"]
 sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
@@ -190,7 +191,7 @@ libraries/ = SubResource("AnimationLibrary_5kb7d")
 autoplay = &"moving_wall"
 
 [node name="CSGCylinder3D" type="CSGCylinder3D" parent="." unique_id=1278821053]
-transform = Transform3D(1, 0, 0, 0, 0.25881907, -0.9659258, 0, 0.9659258, 0.25881907, 0, 0, -13)
+transform = Transform3D(1, 0, 0, 0, 0.25881907, -0.9659258, 0, 0.9659258, 0.25881907, -4, 0, -13)
 use_collision = true
 radius = 1.0
 height = 0.3
@@ -219,6 +220,9 @@ radius = 0.12
 height = 0.3
 sides = 16
 material = SubResource("StandardMaterial3D_40f74")
+
+[node name="target2" parent="." unique_id=177734097 instance=ExtResource("9_7sxug")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -13)
 
 [connection signal="stopped_charging" from="bow/bow_charge_input" to="bow/arrow_spawner" method="spawn_arrow"]
 [connection signal="constant_bc_ratio" from="bow/bow_charge_input/updator" to="bow/bow_charge_input/Control/PanelContainer/MarginContainer/VBoxContainer/fill" method="set_ratio"]

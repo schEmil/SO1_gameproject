@@ -10,6 +10,8 @@ func arrow_fired(arrow : ArrowBody3D,cam_guide : CamGuide):
 	
 
 func arrow_hit(arrow : ArrowBody3D, thing : Node3D):
+	if thing is Target:
+		return
 	for c in arrow.get_children():
 		if c is CamGuide:
 			if c == cam.cur_cam_guide:
