@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://73fmgseap715" path="res://scenes/target_scene/sync_ring_sizes.gd" id="2_2bhhf"]
 [ext_resource type="Script" uid="uid://dxke6eobgbs51" path="res://scenes/target_scene/set_ring_sizes.gd" id="2_ql0dj"]
 [ext_resource type="Script" uid="uid://b5n8m5utecfk5" path="res://scripts/cam_guide.gd" id="4_3vybu"]
+[ext_resource type="Script" uid="uid://bk3yy27jmcsoc" path="res://scenes/target_scene/ring_glow.gd" id="5_77gyq"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_w6r2s"]
 height = 0.5
@@ -65,5 +66,11 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ql0dj")
 mesh = SubResource("CylinderMesh_w6r2s")
 
 [node name="CamGuide" type="Node3D" parent="." unique_id=1899103036]
+transform = Transform3D(0.8241261, 0.18440385, -0.53554755, 0, 0.94551855, 0.32556814, 0.5664062, -0.26830927, 0.77922654, -1.572, 0.99, 1.967)
 script = ExtResource("4_3vybu")
+tags = Array[StringName]([&"target_scored"])
 metadata/_custom_type_script = "uid://b5n8m5utecfk5"
+
+[node name="ring_glow" type="Node" parent="." unique_id=1251754454 node_paths=PackedStringArray("ring_holder")]
+script = ExtResource("5_77gyq")
+ring_holder = NodePath("../target_col/target_rings")

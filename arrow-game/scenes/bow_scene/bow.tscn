@@ -1,0 +1,104 @@
+[gd_scene format=3 uid="uid://b50nufpip5m80"]
+
+[ext_resource type="Script" uid="uid://cduv0nsj02rgh" path="res://scripts/bow_charge_input.gd" id="1_fe10e"]
+[ext_resource type="Script" uid="uid://f4ba3vm2uqwr" path="res://scenes/bow_scene/show_charge.gd" id="2_871hi"]
+[ext_resource type="Script" uid="uid://cpuo2nw2f2l81" path="res://scripts/stretch_ratio_between_2_control_fills.gd" id="3_5vxcq"]
+[ext_resource type="Script" uid="uid://ojfaqlxqcw7r" path="res://scenes/bow_scene/fill_updator.gd" id="4_baqb2"]
+[ext_resource type="Script" uid="uid://cundib2wh0436" path="res://scenes/bow_scene/arrow_spawner.gd" id="5_mugw6"]
+[ext_resource type="Script" uid="uid://b5n8m5utecfk5" path="res://scripts/cam_guide.gd" id="6_rnd3o"]
+[ext_resource type="Script" uid="uid://ccn35mirwoeqn" path="res://scenes/main_scene/bow_emit_to_global.gd" id="7_70b2r"]
+
+[sub_resource type="Curve" id="Curve_fe10e"]
+_data = [Vector2(0, 0), 0.0, 0.50957245, 0, 0, Vector2(1, 1), 2.3777583, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="Gradient" id="Gradient_y24u2"]
+offsets = PackedFloat32Array(0.0125, 1)
+colors = PackedColorArray(0.37254903, 0.37254903, 0.73333335, 1, 0.9372549, 0.5294118, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_y24u2"]
+gradient = SubResource("Gradient_y24u2")
+width = 512
+
+[node name="bow" type="Node3D" unique_id=480351907]
+
+[node name="bow_charge_input" type="Node" parent="." unique_id=1569677150]
+script = ExtResource("1_fe10e")
+charge_curve = SubResource("Curve_fe10e")
+
+[node name="Control" type="Control" parent="bow_charge_input" unique_id=2060627926]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="PanelContainer" type="PanelContainer" parent="bow_charge_input/Control" unique_id=1648071714]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -86.0
+offset_top = -324.0
+offset_bottom = 324.0
+grow_horizontal = 0
+grow_vertical = 2
+size_flags_horizontal = 8
+
+[node name="MarginContainer" type="MarginContainer" parent="bow_charge_input/Control/PanelContainer" unique_id=2141222624]
+layout_mode = 2
+theme_override_constants/margin_left = 4
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 4
+theme_override_constants/margin_bottom = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="bow_charge_input/Control/PanelContainer/MarginContainer" unique_id=1532845220]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="unfill" type="ColorRect" parent="bow_charge_input/Control/PanelContainer/MarginContainer/VBoxContainer" unique_id=303711999]
+layout_mode = 2
+size_flags_vertical = 3
+color = Color(1, 1, 1, 0)
+
+[node name="fill" type="ColorRect" parent="bow_charge_input/Control/PanelContainer/MarginContainer/VBoxContainer" unique_id=463578396]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 0.0
+script = ExtResource("2_871hi")
+color_ramp = SubResource("GradientTexture1D_y24u2")
+
+[node name="fill_logic" type="Node" parent="bow_charge_input/Control/PanelContainer/MarginContainer/VBoxContainer" unique_id=1951241807 node_paths=PackedStringArray("filler", "defiller")]
+script = ExtResource("3_5vxcq")
+filler = NodePath("../fill")
+defiller = NodePath("../unfill")
+
+[node name="updator" type="Node" parent="bow_charge_input" unique_id=1058283941 node_paths=PackedStringArray("b_c_input")]
+script = ExtResource("4_baqb2")
+b_c_input = NodePath("..")
+
+[node name="arrow_spawner" type="Node3D" parent="." unique_id=137233984]
+transform = Transform3D(1, 0, 0, 0, 0.17364821, 0.98480767, 0, -0.98480767, 0.17364821, 0, -0.40000007, 1.4000001)
+script = ExtResource("5_mugw6")
+spawner_tags = Array[String](["bow1"])
+
+[node name="cam_pos" type="Node3D" parent="." unique_id=2045983281]
+transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0.2, 1)
+script = ExtResource("6_rnd3o")
+tags = Array[StringName]([&"bow"])
+guide_lerp_speed = 9.0
+metadata/_custom_type_script = "uid://b5n8m5utecfk5"
+
+[node name="emit_to_global" type="Node" parent="." unique_id=730854863]
+script = ExtResource("7_70b2r")
+bow_tags = Array[String](["bow1"])
+
+[connection signal="started_charging" from="bow_charge_input" to="emit_to_global" method="emit_bow_charge_start" unbinds=1]
+[connection signal="stopped_charging" from="bow_charge_input" to="arrow_spawner" method="spawn_arrow"]
+[connection signal="constant_bc_ratio" from="bow_charge_input/updator" to="bow_charge_input/Control/PanelContainer/MarginContainer/VBoxContainer/fill" method="set_ratio"]
+[connection signal="constant_bc_ratio" from="bow_charge_input/updator" to="bow_charge_input/Control/PanelContainer/MarginContainer/VBoxContainer/fill_logic" method="set_stretch_ratio"]

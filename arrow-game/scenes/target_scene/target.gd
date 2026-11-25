@@ -2,6 +2,7 @@ extends Node3D
 class_name Target
 
 signal target_hit(arrow : ArrowBody3D,points : float)
+signal ring_hit(arrow : ArrowBody3D,ring_num : int)
 
 ## ordered by ring distance and then points awardedS
 @export var point_rings : Array[Vector2] = []
@@ -10,10 +11,12 @@ signal target_hit(arrow : ArrowBody3D,points : float)
 
 func hit_target(arrow : ArrowBody3D = null):
 	var points : float = default_points
+	var ring : int = calc_ring_hit(arrow)
 	if arrow:
 		points = calc_point_from_hit(arrow)
 	
 	target_hit.emit(arrow,points)
+	ring_hit.emit(arrow,ring)
 	BowGlobal.target_hit.emit(self,arrow,points)
 	print("TARGET_HIT with points: "+str(points))
 	

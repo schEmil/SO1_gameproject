@@ -1,5 +1,6 @@
 extends Node3D
 
+@export var spawner_tags : Array[String] = []
 @export var arrow_scene : PackedScene = preload("res://scenes/arrow_scene/arrow.tscn")
 @export var speed : float = 10.0
 
