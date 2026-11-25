@@ -29,6 +29,10 @@ top_radius = 1.0
 bottom_radius = 1.0
 height = 0.5
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_77gyq"]
+blend_mode = 1
+albedo_color = Color(0.6789437, 0.6789437, 0.6789437, 1)
+
 [node name="target" type="AnimatableBody3D" unique_id=177734097 node_paths=PackedStringArray("target_direction_holder")]
 sync_to_physics = false
 script = ExtResource("1_r37vx")
@@ -74,3 +78,6 @@ metadata/_custom_type_script = "uid://b5n8m5utecfk5"
 [node name="ring_glow" type="Node" parent="." unique_id=1251754454 node_paths=PackedStringArray("ring_holder")]
 script = ExtResource("5_77gyq")
 ring_holder = NodePath("../target_col/target_rings")
+glow_mat = SubResource("StandardMaterial3D_77gyq")
+
+[connection signal="ring_hit" from="." to="ring_glow" method="glow_a_ring_from_arrow_hit"]

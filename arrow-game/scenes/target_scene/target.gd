@@ -44,10 +44,11 @@ func calc_pierce_distance_to_center(arrow : Node3D) -> float:
 	var global_arrow_pos : Vector3 = arrow.global_position
 	if arrow is ArrowBody3D:
 		global_arrow_pos += arrow.global_basis.y*arrow.arrow_length*0.5
-	var aligned_pos : Vector3 = flatten_vec3( target_direction_holder.to_local(global_arrow_pos),target_direction_holder.basis.y)
+	var aligned_pos : Vector3 = flatten_vec3(target_direction_holder.to_local(global_arrow_pos),Vector3.UP)
 	var dist : float = aligned_pos.length()
+	#$target_col/CSGSphere3D.position = flatten_vec3(target_direction_holder.to_local(global_arrow_pos),Vector3.UP)
 	print("dist: "+str(dist))
-	print("dot: " +str(aligned_pos.dot(target_direction_holder.basis.z)))
+	print("dot: " +str(aligned_pos.dot(target_direction_holder.basis.y)))
 	return dist
 
 func flatten_vec3(vec3 : Vector3,flattener_vec3 : Vector3):
