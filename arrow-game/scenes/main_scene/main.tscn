@@ -139,3 +139,6 @@ material = SubResource("StandardMaterial3D_40f74")
 
 [node name="target2" parent="." unique_id=177734097 instance=ExtResource("9_7sxug")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -13)
+
+[node name="target3" parent="." unique_id=1060784909 instance=ExtResource("9_7sxug")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -35)

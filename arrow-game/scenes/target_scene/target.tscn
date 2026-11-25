@@ -29,15 +29,19 @@ top_radius = 1.0
 bottom_radius = 1.0
 height = 0.5
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_w6r2s"]
+albedo_color = Color(0, 1, 0, 1)
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_77gyq"]
 blend_mode = 1
 albedo_color = Color(0.6789437, 0.6789437, 0.6789437, 1)
 
-[node name="target" type="AnimatableBody3D" unique_id=177734097 node_paths=PackedStringArray("target_direction_holder")]
+[node name="target" type="AnimatableBody3D" unique_id=177734097 node_paths=PackedStringArray("target_surface_and_dir", "debug_hit_show")]
 sync_to_physics = false
 script = ExtResource("1_r37vx")
 point_rings = Array[Vector2]([Vector2(0.1, 999), Vector2(0.3, 500), Vector2(0.6, 250), Vector2(1, 50)])
-target_direction_holder = NodePath("target_col")
+target_surface_and_dir = NodePath("target_col/surface")
+debug_hit_show = NodePath("target_col/surface/CSGCylinder3D")
 
 [node name="target_col" type="CollisionShape3D" parent="." unique_id=1831330770]
 transform = Transform3D(1, 0, 0, 0, 0.25881904, -0.96592575, 0, 0.96592575, 0.25881904, 0, 0, 0)
@@ -68,6 +72,15 @@ surface_material_override/0 = SubResource("StandardMaterial3D_ql0dj")
 
 [node name="target_white" type="MeshInstance3D" parent="target_col/target_rings" unique_id=1347144807]
 mesh = SubResource("CylinderMesh_w6r2s")
+
+[node name="surface" type="Node3D" parent="target_col" unique_id=1060827699]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+
+[node name="CSGCylinder3D" type="CSGCylinder3D" parent="target_col/surface" unique_id=668342143]
+visible = false
+radius = 0.03
+height = 0.2
+material = SubResource("StandardMaterial3D_w6r2s")
 
 [node name="CamGuide" type="Node3D" parent="." unique_id=1899103036]
 transform = Transform3D(0.8241261, 0.18440385, -0.53554755, 0, 0.94551855, 0.32556814, 0.5664062, -0.26830927, 0.77922654, -1.572, 0.99, 1.967)

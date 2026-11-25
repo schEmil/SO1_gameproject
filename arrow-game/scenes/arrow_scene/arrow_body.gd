@@ -11,6 +11,8 @@ class_name ArrowBody3D
 @export var active_flying : bool = true
 @export var arrow_length : float = 2.0
 
+var prev_global_trans : Transform3D = Transform3D.IDENTITY
+
 signal hit_something(hit_thing : Node3D)
 
 func _ready() -> void:
@@ -19,11 +21,16 @@ func _ready() -> void:
 
 func on_body_entered(body : Node3D):
 	active_flying = false
+	#test_to place arrow more precisely by proxy
+	#global_transform = global_transform.interpolate_with(prev_global_trans,0.5)
+	
+	
 	
 	set_deferred("process_mode",ProcessMode.PROCESS_MODE_DISABLED)
+	KinematicCollision3D.new()
 	
 	reparent.call_deferred(body)
-	global_position -= velocity.normalized()*0.005
+	#global_position -= velocity.normalized()*0.005
 	
 	hit_something.emit(body)
 	if body is Target:
@@ -34,7 +41,7 @@ func on_body_entered(body : Node3D):
 func _physics_process(delta: float) -> void:
 	if not active_flying:
 		return
-	
+	prev_global_trans = global_transform
 	global_position += velocity*delta
 	velocity += arrow_gravity*delta
 	
