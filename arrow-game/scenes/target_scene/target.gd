@@ -11,8 +11,8 @@ signal ring_hit(arrow : ArrowBody3D,ring_num : int)
 @export var target_surface_and_dir: Node3D
 @export var debug_hit_show : Node3D = null
 
-func hit_target(arrow : ArrowBody3D = null):
-	var r_d : float = calc_pierce_distance_to_center(arrow)
+func hit_target(arrow : ArrowBody3D = null,hit_point : Vector3 = target_surface_and_dir.global_position):
+	var r_d : float = calc_pierce_distance_to_center(hit_point)
 	var points : float = default_points
 	var ring : int = calc_ring_hit(r_d)
 	if arrow:
@@ -33,33 +33,23 @@ func calc_ring_hit(ring_dist : float = 0.0) -> int:
 	var closest_ring : int = 0
 	var closest_dist : float = 9999999.9
 	var cur_ring : int = 0
+	
 	for ring : Vector2 in point_rings:
 		var dist : float = abs(ring.x-ring_dist)
-		if dist <= closest_dist:
+		if dist < closest_dist:
 			closest_ring = cur_ring
 			closest_dist = dist
 		
 		cur_ring += 1
 	return closest_ring
 
-func calc_pierce_distance_to_center(arrow : Node3D) -> float:
-	var global_arrow_pos : Vector3 = arrow.global_position
+func calc_pierce_distance_to_center(point : Vector3) -> float:
+	var global_arrow_pos : Vector3 = point
 	
-	if arrow is ArrowBody3D:
-		
-		global_arrow_pos += arrow.global_basis.y*arrow.arrow_length*0.5
-		
-		#var from : Vector3 = arrow.global_position-arrow.global_basis.y*arrow.arrow_length*0.5
-		#var to : Vector3 = arrow.global_position+arrow.global_basis.y*arrow.arrow_length*0.5
-		#var col : Dictionary = get_instant_ray_col(from,to,arrow.collision_mask)
-		#if col:
-			#global_arrow_pos = col["position"]
-			#print("\nray\n")
-		
 	
 	
 	var aligned_pos : Vector3 = flatten_vec3(target_surface_and_dir.to_local(global_arrow_pos),Vector3.UP)
-	var dist : float = aligned_pos.length()
+	var dist : float = target_surface_and_dir.global_position.distance_to(point)
 	if debug_hit_show:
 		debug_hit_show.global_position = global_arrow_pos
 	print("dist: "+str(dist))

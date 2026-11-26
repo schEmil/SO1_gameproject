@@ -12,7 +12,7 @@ func arrow_fired(arrow : ArrowBody3D,cam_guide : CamGuide):
 	cam.cur_cam_guide = cam_guide
 	
 
-func arrow_hit(arrow : ArrowBody3D, thing : Node3D):
+func arrow_hit(arrow : ArrowBody3D, thing : Node3D, hit_point : Vector3, normal : Vector3):
 	if thing is Target:
 		return
 	for c in arrow.get_children():
